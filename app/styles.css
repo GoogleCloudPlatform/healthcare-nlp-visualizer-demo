@@ -1,0 +1,121 @@
+
+.entity {
+    font-weight: bold;
+}
+
+.medicine {
+    color: #DB4437;
+
+}
+
+.laboratory {
+    color: #4285F4;
+
+}
+
+.body {
+    color: #F4B400;
+}
+
+.procedure {
+    color: #0F9D58;
+}
+
+.mdl-radio{
+    margin-right: 1em;
+}
+
+input[type="textarea"]:disabled{
+    color: rgba(0,0,0,.60);
+}
+
+#demo-app{
+    margin: auto;
+    width: 40%;
+    min-width: 900px;
+}
+
+#response-container{
+    margin-top:30px;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+textarea {
+    font-family: var(--paper-font-subhead_-_font-family);
+    -webkit-font-smoothing: var(--paper-font-subhead_-_-webkit-font-smoothing);
+    font-size: var(--paper-font-subhead_-_font-size);
+    font-weight: var(--paper-font-subhead_-_font-weight);
+    line-height: var(--paper-font-subhead_-_line-height);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    flex-grow: 1;
+    height: 161px;
+    outline: none;
+    overflow: auto;
+    padding: 10px 14px;
+    resize: none;
+    transition: background-color ease .5s , border-color ease .5s;
+    width: 80%;
+}
+
+#button{
+    vertical-align: top;
+    width: 120px;
+    height: 50px;
+    font-size: 1.2em;
+    font-weight: 100;
+    margin-left: 20px;
+    border-radius: 5px;
+}
+
+.medical-card{
+    padding: 26px;
+    display: inline-block;
+    margin: 14px;
+    width: 40%;
+    height: 187px;
+    vertical-align: top;
+}
+
+.card-columns{
+    column-count : 2;
+    column-gap: 14px;
+}
+
+.entity-medical-card{
+    padding: 26px;
+    display: inline-block;
+    margin: 14px;
+    width: 340px;
+    /* height: 187px; */
+    vertical-align: top;
+}
+.code-block{
+    overflow-x: scroll;
+    background-color: #f8f9fa;
+    padding: 16px;
+    max-height: 700px;
+}
+
+.mdl-chip{
+    margin: 3px 2px;
+}
+
+
+.blue-highlighting{
+    background-color:#d2e3fc;
+}
+
+.blue-text{
+    color: #4285F4;
+}
+
+.material-icons{
+    vertical-align: middle;
+}
+
+#relation-extraction-panel{
+    padding: 30px;
+}
