@@ -1,0 +1,176 @@
+<html>
+
+<head>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <!-- make app look googley -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+
+    <!-- our app styles -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <!-- make app sct googley -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+
+    <!-- our app script -->
+    <script src="script.js"></script>
+
+
+</head>
+
+<body>
+
+    <div class="mdl-grid" id="app">
+
+        <div style="text-align: center" class="mdl-cell mdl-cell--12-col">
+            <h2>Natural Language Healthcare API Demo</h2>
+            <h6 style="margin: 0">Built by <a href="https://twitter.com/asrivas_dev">asrivas_dev@</a> & <a href="https://twitter.com/zackakil">zackakil@</a></h6>
+            <h4 style="margin: 30px">Try the API</h4>
+        </div>  
+
+        <div id="demo-app">
+
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                <input type="radio" id="option-1" class="mdl-radio__button" name="text_doc" value=0 v-model="text_option" checked v-bind:disabled="loading">
+                <span class="mdl-radio__label">Sample Medical record</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                <input type="radio" id="option-2" class="mdl-radio__button" name="text_doc" value=1 v-model="text_option" v-bind:disabled="loading">
+                <span class="mdl-radio__label">Sample Research paper</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                <input type="radio" id="option-3" class="mdl-radio__button" name="text_doc" value=2 v-model="text_option" v-bind:disabled="loading">
+                <span class="mdl-radio__label">Sample Lab Form</span>
+            </label>
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-4">
+                <input type="radio" id="option-4" class="mdl-radio__button" name="text_doc" value="custom" v-model="text_option"  v-bind:disabled="loading">
+                <span class="mdl-radio__label">Custom (plain text)</span>
+            </label>
+
+            <div style="margin-top: 20px;">
+                <textarea
+                type="text" rows="10" id="input" 
+                v-bind:disabled="loading || using_sample_text" 
+                placeholder="Enter your medical text here..."
+                v-model="input_text"
+                maxlength="2000">
+                </textarea>
+
+                <button id="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" 
+                onclick="analyse_text()" 
+                v-bind:disabled="loading || (input_text.length == 0)">ANALYZE</button>
+            </div>
+
+            <div id="loading-bar" v-if="loading" 
+            class="mdl-progress mdl-js-progress mdl-progress__indeterminate" 
+            style="width:100%; margin-top: 23px;"></div>
+
+            <div id="response-container" v-if="medical_object">
+
+                <p><span v-bind:class="[get_css_class_for_type(text_part.type), {entity: !text_part.normal_text}]"
+                        v-for="text_part in parsed_text_parts">
+                                {{text_part.text}}
+                        </span>
+                </p>
+
+                <div id="tabs" class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                    <div class="mdl-tabs__tab-bar">
+                        <a href="#knowledge-exactraction-panel" class="mdl-tabs__tab is-active">Knowledge Panel</a>
+                        <a href="#context-assessment-panel" class="mdl-tabs__tab">Context Assessment</a>
+                        <a href="#relation-extraction-panel" class="mdl-tabs__tab">Relation Extraction</a>
+                        <a href="#json-panel" class="mdl-tabs__tab">JSON</a>
+                    </div>
+
+                    <div class="mdl-tabs__panel is-active" id="knowledge-exactraction-panel">
+
+                        <h5 v-if="!medical_object.entities">No entities found</h5>
+
+                        <div class="card-columns">
+                            <div v-for="entity in medical_object.entities" class="entity-medical-card mdl-shadow--4dp">
+                                <p><b>{{entity.preferredTerm}}</b> - [<i>{{entity.entityId}}</i>]</p>
+                                <div>
+                                    <span class="mdl-chip" v-for="code in entity.vocabularyCodes">
+                                        <span class="mdl-chip__text">{{code}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-tabs__panel" id="context-assessment-panel">
+                        <h5 v-if="!medical_object.entityMentions">No entities mentions found</h5>
+                       
+                            <div v-for="mention in medical_object.entityMentions" class="medical-card mdl-shadow--4dp">
+                                <p><b>{{mention.text.content}}</b></p>
+                                <p v-if="mention.subject"> Subject - {{mention.subject.value}}
+                                </p>
+                                <p v-if="mention.certaintyAssessment"> Certainty Assessment -
+                                    {{mention.certaintyAssessment.value}}</p>
+                                <p v-if="mention.temporalAssessment"> Temporal assessment -
+                                    {{mention.temporalAssessment.value}}</p>
+                                <p v-if="mention.confidence">Overall Confidence - {{mention.confidence.toFixed(2)}}</p>
+                            </div>
+                     
+                    </div>
+                    <div class="mdl-tabs__panel" id="relation-extraction-panel">
+                        <h5 v-if="!medical_object.relationships">No relationships found</h5>
+
+                        <div v-for="relationship in relationship_list">
+                            <span class="blue-text"><b>{{relationship.text}}</b></span>
+                            <span v-for="connection in relationship.objects">
+                                <span class="material-icons">
+                                    arrow_right_alt
+                                </span>
+                                <span>{{connection}}</span>
+                            </span>
+                        </div>
+
+
+     
+                    </div>
+                    <div class="mdl-tabs__panel" id="json-panel">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <h6>Request URL</h6>
+<pre class="code-block">
+<code><b>POST:</b> https://healthcare.googleapis.com/v1alpha2/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities</code>
+</pre>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <h6>Request body</h6>
+<pre class="code-block">
+<code>{{JSON.stringify({"document_content": last_submitted_text}, null, 2)}}</code>
+</pre>
+
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <h6>Response
+                                    <button style="float:right" class="mdl-button mdl-js-button mdl-button--raised" onclick="download_response()">
+                                    Download JSON Response
+                                    </button>
+                                </h6>
+
+<pre class="code-block">
+<code>{{JSON.stringify(response_body, null, 2)}}</code>
+</pre>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+
+</html>
