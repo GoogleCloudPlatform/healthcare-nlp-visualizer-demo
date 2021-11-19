@@ -26,7 +26,7 @@ const fetch = require('node-fetch');
 exports.analyzeDocument = async (req, res) => {
   handleCors(req, res);
 
-  const url = `https://healthcare.googleapis.com/v1alpha2/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities`;
+  const url = `https://healthcare.googleapis.com/v1/projects/REPLACE_ME/locations/us-central1/services/nlp:analyzeEntities`;
   let document;
 
   if (!req.body || !req.body.text) {

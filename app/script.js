@@ -139,7 +139,7 @@ function analyse_text() {
   console.log('input text: ' + text);
 
   $.ajax({
-    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/visualizer',
+    url: 'https://REPLACE_ME.cloudfunctions.net/visualizer',
     type: 'POST',
     data: {'text': text},
     dataType: 'JSON',
