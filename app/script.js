@@ -151,7 +151,10 @@ function analyse_text() {
     data: {'text': text},
     dataType: 'JSON',
     success: function(data) {
-      console.log(data);
+      // Uncomment the following line to trace output in the
+      // browser debug console.
+
+      // console.log(data);
       app.medical_object = data;
       app.response_body['entities'] = data.entities;
       app.response_body['entityMentions'] = data.entityMentions;
@@ -163,14 +166,15 @@ function analyse_text() {
       app.medical_object = null;
     },
   })
-      .done(function(data) {
-        // stop loading
-        app.last_submitted_text = text;
-        app.loading = false;
-      })
-      .fail(function(data) {
-
-      });
+  .done(function(data) {
+    // stop loading
+    app.last_submitted_text = text;
+    app.loading = false;
+  })
+  .fail(function(data) {
+    console.log("Cloud Function call failed!");
+    console.log(JSON.stringify(data));
+  });
 }
 
 function downloadResponse() {
