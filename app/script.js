@@ -136,8 +136,15 @@ var app = new Vue({
 function analyse_text() {
   // get text
   const text = app.input_text;
-  console.log('input text: ' + text);
 
+  // Uncomment the following to view the input text in the browser
+  // debug console.
+  
+  // console.log('input text: ' + text);
+
+/**
+ * You must REPLACE the url value with the url of your cloud function.
+ */
   $.ajax({
     url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/visualizer',
     type: 'POST',
