@@ -33,7 +33,7 @@ exports.analyzeDocument = async (req, res) => {
    * You may want to REPLACE "us-central1" with your preferred region. 
    */
   const url = `https://healthcare.googleapis.com/v1beta1/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities`;
-  let document;
+  let document_content;
 
   if (!req.body || !req.body.text) {
     res.status(200).send('No input text provided.');
@@ -41,7 +41,7 @@ exports.analyzeDocument = async (req, res) => {
   } else {
     // Uncomment to view request body in the browser debugging console
     // console.log(`req.body ${JSON.stringify(req.body)}`);
-    document = req.body.text;
+    document_content = req.body.text;
   }
 
   /**
@@ -55,11 +55,11 @@ exports.analyzeDocument = async (req, res) => {
   const accessToken = await auth.getAccessToken();
   const response = await fetch(url, {
     method: 'post',
-    body: JSON.stringify({'document_content': document}),
+    body: JSON.stringify({'document_content': document_content}),
     headers: {'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json'},
   });
   let json = await response.json();
-  json['text'] = document;
+  json['text'] = document_content;
 
   res.status(200).type('text/json').send(json);
 };
