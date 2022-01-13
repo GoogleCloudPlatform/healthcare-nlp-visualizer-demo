@@ -58,9 +58,16 @@ exports.analyzeDocument = async (req, res) => {
     body: JSON.stringify({'document_content': document_content}),
     headers: {'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json'},
   });
+
+  if (! response.ok) {
+    res.status(500).send(JSON.stringify(response));
+    return
+  }
+
   let json = await response.json();
   json['text'] = document_content;
 
+  // 200 status is returned even if the API call fails
   res.status(200).type('text/json').send(json);
 };
 
