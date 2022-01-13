@@ -102,7 +102,7 @@ var app = new Vue({
         const text = enitity_mention.text.content;
         const offset = enitity_mention.text.beginOffset || 0;
 
-        const text_before = app.medical_object.text.slice(cursor, offset);
+        const text_before = app.input_text.slice(cursor, offset);
 
         text_parts.push({'text': text_before, 'offset': offset, 'normal_text': true, 'type': null});
         text_parts.push({'text': text, 'offset': offset, 'normal_text': false, 'type': enitity_mention.type});
@@ -110,7 +110,7 @@ var app = new Vue({
         cursor = offset + text.length;
       });
 
-      const remaining_text = app.medical_object.text.slice(cursor, app.medical_object.text.length);
+      const remaining_text = app.input_text.slice(cursor, app.input_text.length);
       text_parts.push({'text': remaining_text, 'offset': cursor, 'normal_text': true, 'type': null});
 
       return text_parts;
