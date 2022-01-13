@@ -146,7 +146,7 @@ function analyse_text() {
  * You must REPLACE the url value with the url of your cloud function.
  */
   $.ajax({
-    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/visualizer',
+    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/analyzeDocument',
     type: 'POST',
     data: {'text': text},
     dataType: 'JSON',
