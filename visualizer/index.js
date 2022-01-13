@@ -37,8 +37,10 @@ exports.analyzeDocument = async (req, res) => {
 
   if (!req.body || !req.body.text) {
     res.status(200).send('No input text provided.');
+    return
   } else {
-    console.log(`req.body ${JSON.stringify(req.body)}`);
+    // Uncomment to view request body in the browser debugging console
+    // console.log(`req.body ${JSON.stringify(req.body)}`);
     document = req.body.text;
   }
 
