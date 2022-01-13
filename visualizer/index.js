@@ -50,7 +50,7 @@ exports.analyzeDocument = async (req, res) => {
   let json = await response.json();
   json['text'] = document;
 
-  res.status(200).send(json).type('text/json');
+  res.status(200).type('text/json').send(json);
 };
 
 /**
