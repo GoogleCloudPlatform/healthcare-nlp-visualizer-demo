@@ -26,7 +26,13 @@ const fetch = require('node-fetch');
 exports.analyzeDocument = async (req, res) => {
   handleCors(req, res);
 
-  const url = `https://healthcare.googleapis.com/v1alpha2/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities`;
+  /*
+   * Note: When written, the NLP API is only available in us-central1 and europe-west4 
+   *
+   * You may want to REPLACE "healthcare-nlp-demo" with your PROJECT ID (not PROJECT NAME)
+   * You may want to REPLACE "us-central1" with your preferred region. 
+   */
+  const url = `https://healthcare.googleapis.com/v1beta1/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities`;
   let document;
 
   if (!req.body || !req.body.text) {
@@ -36,6 +42,9 @@ exports.analyzeDocument = async (req, res) => {
     document = req.body.text;
   }
 
+  /**
+   * You may want to REPLACE key.json below with the path to your service account key.
+   */
   const auth = new google.auth.GoogleAuth({
     keyFile: './key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-healthcare'],
