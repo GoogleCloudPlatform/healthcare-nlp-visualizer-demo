@@ -17,6 +17,11 @@ texts for a a medical record, research paper and lab form.
 
 ## Set Up Instructions
 
+### Important
+
+This demo will create a cloud function that is executable by ANYONE on the Internet. Be sure to 
+delete it when your demonstration is complete.
+
 ### Backend
 
 The HTTP Cloud Function can be found in the `/analyzeDocument` directory. Please note, this code is NOT
