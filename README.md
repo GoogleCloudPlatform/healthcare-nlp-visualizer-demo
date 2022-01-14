@@ -12,7 +12,7 @@ texts for a a medical record, research paper and lab form.
 
 1. A GCP Project with billing and the Healthcare NLP API enabled.
 1. Complete the Healthcare NLP [How-to Guide](https://cloud.google.com/healthcare/docs/how-tos/nlp).
-2. Note: For the purposes of this demo, grant the create service account "Viewer", not "Owner".
+    - Note: For the purposes of this demo, grant the create service account "Viewer", not "Owner".
 1. Familiarity with Google Cloud Functions and Vue.js.
 
 ## Set Up Instructions
@@ -23,10 +23,10 @@ The HTTP Cloud Function can be found in the `/analyzeDocument` directory. Please
 meant for production use.
 
 1. ```grep``` the `/analyzeDocument` directory for the string `REPLACE`.
-2. You will need to replace these placeholders with real values.
+    - You will need to replace these placeholders with real values.
 1. Download the service account key for your project.
 1. Deploy the Cloud Function, you can follow the instructions [here](https://cloud.google.com/functions/docs/deploying).
-2. See the sample invocation in `util/deploy\_cf.sh`
+    - See the sample invocation in `util/deploy_cf.sh`
 1. Copy the endpoint for your Cloud Function.
 
 ### Frontend
@@ -34,8 +34,8 @@ meant for production use.
 The Vue.js app is found in the `/app` directory.
 
 1. ```grep``` the `/app` directory for the string `REPLACE`.
-2. You will need to replace these placeholders with real values.
+    - You will need to replace these placeholders with real values.
 1. ```cd app/```
 1. Paste your Cloud Function endpoint in to the placeholder in index.html. 
 1. Start a local server of your choice and open the application in your browser.
-2. See the sample server in `util/server.py`.
+    - See the sample server in `util/server.py`.
