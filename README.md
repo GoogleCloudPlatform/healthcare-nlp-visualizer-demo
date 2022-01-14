@@ -12,7 +12,7 @@ texts for a a medical record, research paper and lab form.
 
 1. A GCP Project with billing and the Healthcare NLP API enabled.
 1. Complete the Healthcare NLP [How-to Guide](https://cloud.google.com/healthcare/docs/how-tos/nlp).
-    - Note: For the purposes of this demo, grant the create service account "Viewer", not "Owner".
+    - Note: For the purposes of this demo, grant the new service account "Viewer", not "Owner".
 1. Familiarity with Google Cloud Functions and Vue.js.
 
 ## Set Up Instructions
