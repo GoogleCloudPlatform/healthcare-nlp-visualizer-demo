@@ -102,7 +102,7 @@ var app = new Vue({
         const text = enitity_mention.text.content;
         const offset = enitity_mention.text.beginOffset || 0;
 
-        const text_before = app.medical_object.text.slice(cursor, offset);
+        const text_before = app.input_text.slice(cursor, offset);
 
         text_parts.push({'text': text_before, 'offset': offset, 'normal_text': true, 'type': null});
         text_parts.push({'text': text, 'offset': offset, 'normal_text': false, 'type': enitity_mention.type});
@@ -110,7 +110,7 @@ var app = new Vue({
         cursor = offset + text.length;
       });
 
-      const remaining_text = app.medical_object.text.slice(cursor, app.medical_object.text.length);
+      const remaining_text = app.input_text.slice(cursor, app.input_text.length);
       text_parts.push({'text': remaining_text, 'offset': cursor, 'normal_text': true, 'type': null});
 
       return text_parts;
@@ -136,15 +136,25 @@ var app = new Vue({
 function analyse_text() {
   // get text
   const text = app.input_text;
-  console.log('input text: ' + text);
 
+  // Uncomment the following to view the input text in the browser
+  // debug console.
+  
+  // console.log('input text: ' + text);
+
+/**
+ * You must REPLACE the url value with the url of your cloud function.
+ */
   $.ajax({
-    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/visualizer',
+    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/analyzeDocument',
     type: 'POST',
     data: {'text': text},
     dataType: 'JSON',
     success: function(data) {
-      console.log(data);
+      // Uncomment the following line to trace output in the
+      // browser debug console.
+
+      // console.log(data);
       app.medical_object = data;
       app.response_body['entities'] = data.entities;
       app.response_body['entityMentions'] = data.entityMentions;
@@ -156,14 +166,15 @@ function analyse_text() {
       app.medical_object = null;
     },
   })
-      .done(function(data) {
-        // stop loading
-        app.last_submitted_text = text;
-        app.loading = false;
-      })
-      .fail(function(data) {
-
-      });
+  .done(function(data) {
+    // stop loading
+    app.last_submitted_text = text;
+    app.loading = false;
+  })
+  .fail(function(data) {
+    console.log("Cloud Function call failed!");
+    console.log(JSON.stringify(data));
+  });
 }
 
 function downloadResponse() {

@@ -26,31 +26,50 @@ const fetch = require('node-fetch');
 exports.analyzeDocument = async (req, res) => {
   handleCors(req, res);
 
-  const url = `https://healthcare.googleapis.com/v1alpha2/projects/healthcare-nlp-demo/locations/us-central1/services/nlp:analyzeEntities`;
-  let document;
+  /*
+   * Note: When written, the NLP API is only available in us-central1 and europe-west4 
+   *
+   * REPLACE PROJECT ID (not PROJECT NAME)
+   * You may want to REPLACE "us-central1" with your preferred region. 
+   */
+  const url = `https://healthcare.googleapis.com/v1beta1/projects/PROJECT_ID/locations/us-central1/services/nlp:analyzeEntities`;
+  let document_content;
 
   if (!req.body || !req.body.text) {
     res.status(200).send('No input text provided.');
+    return
   } else {
-    console.log(`req.body ${JSON.stringify(req.body)}`);
-    document = req.body.text;
+    // Uncomment to view request body in the browser debugging console
+    // console.log(`req.body ${JSON.stringify(req.body)}`);
+    document_content = req.body.text;
   }
 
+  /**
+   * REPLACE sa_key.json below with the path to your service account key.
+   * This path expects the key to be in the same directory as this script.
+   */
   const auth = new google.auth.GoogleAuth({
-    keyFile: './key.json',
+    keyFile: './sa_key.json',
     scopes: ['https://www.googleapis.com/auth/cloud-healthcare'],
   });
 
   const accessToken = await auth.getAccessToken();
   const response = await fetch(url, {
     method: 'post',
-    body: JSON.stringify({'document_content': document}),
+    body: JSON.stringify({'document_content': document_content}),
     headers: {'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json'},
   });
-  let json = await response.json();
-  json['text'] = document;
 
-  res.status(200).send(json).type('text/json');
+  if (! response.ok) {
+    res.status(500).send(JSON.stringify(response));
+    return
+  }
+
+  let json = await response.json();
+  json['text'] = document_content;
+
+  // 200 status is returned even if the API call fails
+  res.status(200).type('text/json').send(json);
 };
 
 /**
