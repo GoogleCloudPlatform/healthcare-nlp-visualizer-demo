@@ -55,8 +55,7 @@ The HTTP Cloud Function can be found in the `/visualizer` directory. Please note
 1. Open a terminal window with access to the gcloud SDK utility, and make sure you are logged in and have access to a valid GCP Project.
 
 ```bash
-# GOOGLE_CLOUD_PROJECT=<gcp-project-id>
-GOOGLE_CLOUD_PROJECT=davemorris-ai-day-202200615
+GOOGLE_CLOUD_PROJECT=<gcp-project-id>
 gcloud config set project $GOOGLE_CLOUD_PROJECT
 
 SERVICE_ACCOUNT_NAME=nlp-api
