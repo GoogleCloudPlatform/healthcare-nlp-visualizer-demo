@@ -139,7 +139,10 @@ function analyse_text() {
   console.log('input text: ' + text);
 
   $.ajax({
-    url: 'https://us-central1 YOUR FUNCTION HERE.cloudfunctions.net/visualizer',
+    // for local execution using Cloud Functions Framework (https://github.com/GoogleCloudPlatform/functions-framework-nodejs)
+    url: 'http://localhost:8080',
+    // for execution within GCP Cloud Functions
+    //  url: 'https://REPLACE_ME.cloudfunctions.net/visualizer',
     type: 'POST',
     data: {'text': text},
     dataType: 'JSON',
